@@ -1,0 +1,41 @@
+<%- include('partials/header') %>
+
+<div class="container jumbotron" style="width: 40%">
+  <div class="container mt-5">
+    <h2 style="text-transform: capitalize;">Please enter the following:</h2>
+
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="card">
+          <div class="card-body">
+
+            <!-- Makes POST request to /register route -->
+            <form action="/formsubmit/<%= pid %>/<%= mem %>" method="POST" enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="subject">Subject of Grievance:</label>
+                <input id="subject" type="text" name="subject" required/>
+              </div>
+              <div class="form-group">
+                <label for="image">Image:   </label>
+                <input id="image" type="file" name="pic" accept="image/*"/>
+              </div>
+              <div class="form-group">
+               <label for="resume">Resume:   </label>
+               <input id="resume" type="file" name="resume">
+              </div>
+              <div class="form-group">
+               <label for="details">Grievance Details:   </label>
+               <textarea name="details" id="details" rows="8" cols="80"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,101 @@
+<%- include('partials/header') %>
+
+<div class="container jumbotron" style="width: 40%">
+
+  <div class="jumbotron" style="background-color: #fff;">
+    <div class="container mt-5">
+      <h2 style="text-transform: capitalize;"><%=mem%> Register</h2>
+
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="card">
+            <div class="card-body">
+
+              <!-- Makes POST request to /register route -->
+              <form action="/register/<%=mem%>" method="POST">
+                <div class="form-group">
+                  <label for="name">Name: </label>
+                  <input id="name" type="text" class="form-control" name="name" required oninvalid="this.setCustomValidity('Enter your Name')" onchange="this.setCustomValidity('')">
+                </div>
+                <div class="form-group">
+                  <label for="phone">Mobile No.: </label>
+                  <input type="tel" id="phone" class="form-control" name="phone" pattern="[1-9]{1}[0-9]{9}" required oninvalid="this.setCustomValidity('Enter your phone number')" onchange="this.setCustomValidity('')">
+                </div>
+                <div class="form-group">
+                  <label for="email">Email: </label>
+                  <input type="email" id="email" class="form-control" name="email" required >
+                </div>
+                <div class="form-group">
+                  <label for="dob">DOB: </label>
+                  <input class="form-control" type="date" name="dob" required oninvalid="this.setCustomValidity('Enter your DOB')" onchange="this.setCustomValidity('')">
+                </div>
+
+                <% if(mem == "student"){%>
+                  <div class="form-group">
+                    <label for="number">Enrollment No.: </label>
+                    <input type="number" class="form-control" name="number" required oninvalid="this.setCustomValidity('Enter Enrollment number')" onchange="this.setCustomValidity('')">
+                  </div>
+                  <div class="form-group">
+                      <label for="branch">Branch: </label>
+                      <select id="branch" name="branch">
+                        <option value="">...</option>
+                        <option value="CSE1">CSE1</option>
+                        <option value="CSE2">CSE2</option>
+                        <option value="CSE3">CSE3</option>
+                        <option value="IT1">IT1</option>
+                        <option value="IT2">IT2</option>
+                        <option value="ECE1">ECE1</option>
+                        <option value="ECE2">ECE2</option>
+                        <option value="EEE">EEE</option>
+                        <option value="CSE(E)">CSE(E)</option>
+                        <option value="IT(E)">IT(E)</option>
+                        <option value="ECE(E)">ECE(E)</option>
+                      </select>
+                      <label for="shift" style="margin-left:40px;">Shift: </label>
+                      <select id="shift" name="shift">
+                        <option value="1st">1st</option>
+                        <option value="2nd">2nd</option>
+                      </select>
+                  </div>
+                <%}%>
+
+                <% if(mem == "teacher"){%>
+                  <div class="form-group">
+                    <label for="number">Employee Id: </label>
+                    <input type="number" class="form-control" name="number" required oninvalid="this.setCustomValidity('Enter Employee ID')" onchange="this.setCustomValidity('')">
+                  </div>
+                  <div class="form-group">
+                      <label for="branch">Department: </label>
+                      <select id="branch" name="branch">
+                        <option value="">...</option>
+                        <option value="CSE">CSE</option>
+                        <option value="IT">IT</option>
+                        <option value="ECE">ECE</option>
+                        <option value="EEE">EEE</option>
+                      </select>
+                      <label for="shift" style="margin-left:40px;">Shift: </label>
+                      <select id="shift" name="shift">
+                        <option value="1st">1st</option>
+                        <option value="2nd">2nd</option>
+                      </select>
+                  </div>
+                <%}%>
+
+                <div class="form-group">
+                  <label for="password">Password: </label>
+                  <input type="password" class="form-control" name="password" required oninvalid="this.setCustomValidity('Enter password')" onchange="this.setCustomValidity('')">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Register</button>
+              </form>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

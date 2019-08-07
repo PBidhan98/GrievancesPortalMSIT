@@ -1,0 +1,61 @@
+<%- include('partials/header') %>
+
+<div class="container jumbotron" style="width: 40%;">
+
+  <div class="jumbotron" style="background-color: #fff;">
+    <div class="container mt-5">
+      <h2 style="text-transform: capitalize;"><%=mem%> Account Login</h2>
+
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="card">
+            <div class="card-body">
+
+              <!-- Makes POST request to /register route -->
+
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" class="form-control" name="email" required>
+                </div>
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" name="password" required oninvalid="this.setCustomValidity('Enter your password')" onchange="this.setCustomValidity('')">
+                </div>
+
+                <h6 id="alertm" style="color:red; padding:5%;"></h6>
+
+              <button type="submit" id="submit" class="btn btn-primary">Login</button>
+              <a href="/forget/<%=mem%>" style="float: right; padding-top: 16px;">Forgot Password!</a>
+
+              <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+              <script type="text/javascript">
+                $(document).ready(function() {
+                    $('#submit').click(function(){
+                      var email = $("#email").val();
+                      var password = $("#password").val();
+                      $.post("/login/<%=mem%>",
+                        {
+                          email: email,
+                          password: password,
+                        },function(res, status){
+                          if(res.status=="fail"){
+                            $("#alertm").html(res.msg);
+                          }
+                        }
+                      );
+                    });
+                  }
+                );
+
+              </script>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

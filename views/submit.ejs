@@ -1,0 +1,27 @@
+<%- include('partials/header') %>
+
+
+<div class="container jumbotron">
+
+  <div class="jumbotron" style="background-color: #fff;">
+    <div class="container">
+      <h2 class="display-3" style="text-align:center; padding: 5%">Submit Your New Grievances <a href="/formsubmit/<%= pid %>/<%=mem%>" role="button">here...</a></h2>
+      <hr>
+      <hr />
+
+      <% if(posts.length!=0){%>
+        <div class="jumbotron col-lg-12">
+          <h2 style="text-align:center; font-weight: bold">Previous Grievances:</h2>
+          <%  posts.forEach(function(post){ %>
+                <h3><%= post.subject %></h3>
+                <h4><%= post.details %></h4>
+                <hr />
+          <% }) %>
+        </div>
+      <%}%>
+
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
