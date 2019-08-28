@@ -2,11 +2,18 @@ const bcrypt = require('bcryptjs');
 const mysql = require('mysql');
 
 //create a connection
+// var con = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "",
+//   database: "mydb"
+// });
 var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "mydb"
+  host: "sql12.freesqldatabase.com",
+  user: "sql12303299",
+  password: "vvpkijscyS",
+  database: "sql12303299",
+  port:3306
 });
 
 exports.authenticate = (email, pwd, member) => {
@@ -14,12 +21,6 @@ exports.authenticate = (email, pwd, member) => {
     try{
       //Get user by email
       var sql = "SELECT password,id FROM "+member+"s WHERE email = ?";
-      if(!id){
-        reject({
-          status: "fail",
-          msg: "Password and email entered doesn't match"
-        });
-      }
       con.query(sql, email, function(err, result) {
         if(err) console.log(err);
         bcrypt.compare(pwd, result[0].password, (err, res) => {

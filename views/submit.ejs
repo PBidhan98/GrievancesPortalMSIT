@@ -1,17 +1,15 @@
 <%- include('partials/header') %>
 
 
-<div class="container jumbotron">
-
-  <div class="jumbotron" style="background-color: #fff;">
+<div class="container jumbotron sm-12" style="width: 70%;">
+  <div class="jumbotron" style="background-color: #fff;border-radius: 20px;">
     <div class="container">
-      <h2 class="display-3" style="text-align:center; padding: 5%">Submit Your New Grievances <a href="/formsubmit/<%= pid %>/<%=mem%>" role="button">here...</a></h2>
-      <hr>
-      <hr />
+      <p class="display-3" style="text-align:center;color: #FF5722;font-size:33px;">Submit Your New Grievances <a href="/formsubmit/<%= pid %>/<%=mem%>" role="button">here...</a></p>
 
       <% if(posts.length!=0){%>
+        <hr />
         <div class="jumbotron col-lg-12">
-          <h2 style="text-align:center; font-weight: bold">Previous Grievances:</h2>
+          <h2 style="text-align:center; font-weight:200;font-size:30px;">Previous Grievances:</h2>
           <%  posts.forEach(function(post){ %>
                 <h3><%= post.subject %></h3>
                 <h4><%= post.details %></h4>

@@ -45,10 +45,11 @@ app.use(bodyParser.json());
 
 //create a connection
 var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "mydb"
+  host: "sql12.freesqldatabase.com",
+  user: "sql12303299",
+  password: "vvpkijscyS",
+  database: "sql12303299",
+  port:3306
 });
 
 con.connect(function(err) {
@@ -147,23 +148,39 @@ app.post('/register/:member', function(req, res) {
       //Hash password
       password = hash;
 
-      if(req.params.member=="parent"){
-        var sql = "INSERT INTO "+req.params.member+"s (name, phone, email, dob, password) VALUES ('" + name + "', '" + phone + "', '" + email + "', '" + dob + "', '" + password + "')";
-      }else if(req.params.member=="student"){
-        var sql = "INSERT INTO "+req.params.member+"s (name, phone, email, branch, shift, dob, password, enrollment_No) VALUES ('" + name + "', '" + phone + "',  '" + email + "',  '" + branch + "',  '"+shift+"', '" + dob + "', '" + password + "',  '" + number + "')";
-      }else if(req.params.member=="teacher"){
-        var sql = "INSERT INTO "+req.params.member+"s (name, phone, email, branch, shift, dob, password, employee_Id) VALUES ('" + name + "', '" + phone + "',  '" + email + "',  '" + branch + "',  '"+shift+"', '" + dob + "', '" + password + "',  '" + number + "')";
-      }
+      var s="SELECT email FROM "+req.params.member+"s WHERE email=?";
+      con.query(s, email,function(err,data){
+        console.log(data);
+        if(data.length!=0){
+          console.log("hi");
+          res.send({
+            status: "fail",
+            msg: "Email entered already exists. Login to submit the grievance."
+          });
+        }else{
+          if(req.params.member=="parent"){
+            var sql = "INSERT INTO "+req.params.member+"s (name, phone, email, dob, password) VALUES ('" + name + "', '" + phone + "', '" + email + "', '" + dob + "', '" + password + "')";
+          }else if(req.params.member=="student"){
+            var sql = "INSERT INTO "+req.params.member+"s (name, phone, email, branch, shift, dob, password, enrollment_No) VALUES ('" + name + "', '" + phone + "',  '" + email + "',  '" + branch + "',  '"+shift+"', '" + dob + "', '" + password + "',  '" + number + "')";
+          }else if(req.params.member=="teacher"){
+            var sql = "INSERT INTO "+req.params.member+"s (name, phone, email, branch, shift, dob, password, employee_Id) VALUES ('" + name + "', '" + phone + "',  '" + email + "',  '" + branch + "',  '"+shift+"', '" + dob + "', '" + password + "',  '" + number + "')";
+          }
 
-      con.query(sql, function(err, result) {
-        if (err) {
-          console.log(err);
-          res.send("Something went wrong :( Refresh or Try Again Later!)");
-        } else {
-          res.render("submit", {pid: result.insertId, mem: req.params.member, posts:[]});
+          con.query(sql, function(err, result) {
+            if (err) {
+              console.log(err);
+              res.send("Something went wrong :( Refresh or Try Again Later!)");
+            } else {
+              res.send({
+                status: "success",
+                pid: result.insertId
+              });
+              //res.render("submit", {pid: result.insertId, mem: req.params.member, posts:[]});
+            }
+          });
+
         }
       });
-
     });
   });
 
@@ -171,45 +188,44 @@ app.post('/register/:member', function(req, res) {
 
 app.post('/formsubmit/:pid/:mem',upload.fields([{name: 'pic', maxCount: 1},{name: 'resume', maxCount: 1}]),function(req, res) {
   var {details, subject} = req.body;
-  var _id = req.params.pid;
 
-  var sql = "INSERT INTO " + req.params.mem+"form (subject, details, person_id, filename) VALUES ('" + subject + "','" + details + "', '" + _id + "', '" + timestamp + "')";
-
-  con.query(sql, function(err, result) {
+  var sql = "INSERT INTO " + req.params.mem+"form (subject, details, person_id, filename) VALUES (?,?,?,?)";
+  var toplace = [subject, details,req.params.pid,timestamp];
+  con.query(sql,toplace, function(err, result) {
     if (err) {
       console.log(err);
       res.send("Something went wrong :( Refresh or Try Again Later!)");
     } else {
-      res.redirect("/submitted/"+_id+"/"+req.params.mem);
+      res.redirect("/submitted/"+req.params.pid+"/"+req.params.mem);
     }
   });
 });
 
 app.post("/login/:member", async function(req, res) {
-
   var {email, password} = req.body;
   try{
-    //authenticate user
-        const id = await auth.authenticate(email,password, req.params.member);
-        var sql = "SELECT person_id FROM "+req.params.member+"form WHERE person_id = ?";
-        con.query(sql, id, function(err, data) {
-          if (err) {
-            console.log(err);
-            res.send("Something went wrong :( Refresh or Try Again Later!)");
-          }
-          if (data.length == 0) {
-              res.redirect("/submitted/"+id+"/"+req.params.member);
-          } else {
-            if (id == data[0].person_id) {
-                res.redirect("/submitted/"+id+"/"+req.params.member);
-            }
-          }
+    const id = await auth.authenticate(email,password, req.params.member);
+    var sql = "SELECT person_id FROM "+req.params.member+"form WHERE person_id = ?";
+    con.query(sql, id, function(err, data) {
+      if (err) console.log(err);
+      if (data.length==0) {
+        res.send({
+          status: "success",
+          pid: id
         });
+      } else {
+        if (id == data[0].person_id) {
+          res.send({
+            status: "success",
+            pid: id
+          });
+        }
+      }
+    });
   }catch(err){
-    //User unauthorized
     res.send({
       status: "fail",
-      msg: "Password and email entered doesn't match. Authentication Failed, check if You are registered or not."
+      msg: "Password and Email entered doesn't match. Check if you are registered or not"
     });
   }
 
@@ -226,11 +242,21 @@ app.post("/forget/:mem", function(req,res){
        var sql = "UPDATE "+req.params.mem+"s SET password = ? WHERE email = ? AND dob = ?";
        var data = [npwd, email, dob];
        con.query(sql, data, function(err, result) {
+         console.log(result.affectedRows);
          if (err) {
            console.log(err);
            res.send("Something went wrong :( Refresh or Try Again Later!)");
-         } else {
-           res.redirect("/login/"+req.params.mem);
+         }
+         if(result.affectedRows==0){
+           res.send({
+             status: "fail",
+             msg: "Entered Email and DOB doesn't match :("
+           });
+         }
+         if(result.affectedRows!=0) {
+           res.send({
+             status: "success"
+           });
          }
        });
      });

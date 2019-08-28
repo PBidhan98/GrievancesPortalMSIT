@@ -1,25 +1,31 @@
 <%- include('partials/header') %>
+<style media="screen">
+  label{
+    font-family: "Arial";
+    text-transform: uppercase;
+    font-weight: 200;
+    margin:0.5em 0em;
+  }
 
-<div class="container jumbotron" style="width: 40%">
+</style>
+<div class="container jumbotron sm-12" style="width: 35%;">
 
-  <div class="jumbotron" style="background-color: #fff;">
-    <div class="container mt-5">
-      <h2 style="text-transform: capitalize;"><%=mem%> Register</h2>
-
+  <div class="jumbotron" style="background-color: #fff;border-radius: 20px;">
+    <p class="display-3" style="text-transform: capitalize;color: #FF5722;font-size:30px;text-align:center;"><%=mem%> Register</p>
+    <div class="container">
       <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-12">
           <div class="card">
             <div class="card-body">
 
               <!-- Makes POST request to /register route -->
-              <form action="/register/<%=mem%>" method="POST">
                 <div class="form-group">
                   <label for="name">Name: </label>
-                  <input id="name" type="text" class="form-control" name="name" required oninvalid="this.setCustomValidity('Enter your Name')" onchange="this.setCustomValidity('')">
+                  <input id="name" type="text" class="form-control" name="name" required>
                 </div>
                 <div class="form-group">
                   <label for="phone">Mobile No.: </label>
-                  <input type="tel" id="phone" class="form-control" name="phone" pattern="[1-9]{1}[0-9]{9}" required oninvalid="this.setCustomValidity('Enter your phone number')" onchange="this.setCustomValidity('')">
+                  <input type="tel" id="phone" class="form-control" name="phone" required>
                 </div>
                 <div class="form-group">
                   <label for="email">Email: </label>
@@ -27,13 +33,13 @@
                 </div>
                 <div class="form-group">
                   <label for="dob">DOB: </label>
-                  <input class="form-control" type="date" name="dob" required oninvalid="this.setCustomValidity('Enter your DOB')" onchange="this.setCustomValidity('')">
+                  <input class="form-control" type="date" id="dob" name="dob" required>
                 </div>
 
                 <% if(mem == "student"){%>
                   <div class="form-group">
                     <label for="number">Enrollment No.: </label>
-                    <input type="number" class="form-control" name="number" required oninvalid="this.setCustomValidity('Enter Enrollment number')" onchange="this.setCustomValidity('')">
+                    <input type="number" class="form-control number" name="number" required>
                   </div>
                   <div class="form-group">
                       <label for="branch">Branch: </label>
@@ -51,7 +57,7 @@
                         <option value="IT(E)">IT(E)</option>
                         <option value="ECE(E)">ECE(E)</option>
                       </select>
-                      <label for="shift" style="margin-left:40px;">Shift: </label>
+                      <label for="shift" style="margin-left:60px;">Shift: </label>
                       <select id="shift" name="shift">
                         <option value="1st">1st</option>
                         <option value="2nd">2nd</option>
@@ -62,7 +68,7 @@
                 <% if(mem == "teacher"){%>
                   <div class="form-group">
                     <label for="number">Employee Id: </label>
-                    <input type="number" class="form-control" name="number" required oninvalid="this.setCustomValidity('Enter Employee ID')" onchange="this.setCustomValidity('')">
+                    <input type="number" class="form-control number" name="number" required>
                   </div>
                   <div class="form-group">
                       <label for="branch">Department: </label>
@@ -73,7 +79,7 @@
                         <option value="ECE">ECE</option>
                         <option value="EEE">EEE</option>
                       </select>
-                      <label for="shift" style="margin-left:40px;">Shift: </label>
+                      <label for="shift" style="margin-left:60px;">Shift: </label>
                       <select id="shift" name="shift">
                         <option value="1st">1st</option>
                         <option value="2nd">2nd</option>
@@ -83,11 +89,64 @@
 
                 <div class="form-group">
                   <label for="password">Password: </label>
-                  <input type="password" class="form-control" name="password" required oninvalid="this.setCustomValidity('Enter password')" onchange="this.setCustomValidity('')">
+                  <input type="password" class="form-control" id="password" name="password" required>
+                  <h5 id="alertm" style="color:red; padding:3%;"></h5>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Register</button>
-              </form>
+                <div style="text-align:center;">
+                  <button id="submit" type="submit" class="btn btn-lg" style="width: 40%;border-radius:20px;color: #ffff;background-color: #1fab89;">Register</button>
+                </div>
+
+            <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+            <script type="text/javascript">
+
+
+              $(document).ready(function() {
+                  $('#submit').click(function(){
+                    var name = $("#name").val();
+                    var phone = $("#phone").val();
+                    var dob = $("#dob").val();
+                    var number = $("#number").val();
+                    var email = $("#email").val();
+                    var branch = $("#branch").val();
+                    var shift = $("#shift").val();
+                    var password = $("#password").val();
+                    if(name&&phone&&dob&&email&&password){
+                      var reg = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+                      var OK = reg.exec(phone);
+                      if (!OK)
+                        $("#alertm").html("Phone number isn't  valid");
+                      else
+                        {
+                          $.post("/register/<%=mem%>",
+                            {
+                              name:name,
+                              phone:phone,
+                              dob:dob,
+                              number:number,
+                              email: email,
+                              branch:branch,
+                              shift:shift,
+                              password: password
+                            },function(res, status){
+                              if(res.status=="fail"){
+                                $("#alertm").html(res.msg);
+                              }
+                              if(res.status=="success"){
+                                window.location.href = "/submitted/"+res.pid+"/<%=mem%>";
+                              }
+                            }
+                          );
+                        }
+                    }else{
+                      $("#alertm").html("Enter the empty fields");
+                    }
+                  });
+                }
+              );
+
+            </script>
 
             </div>
           </div>
