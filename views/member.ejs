@@ -1,18 +1,27 @@
 <%- include('partials/header') %>
+<style media="screen">
+  @media (min-width: 850px){
+    .con {
+      width: 35%;
+    }
+  }
+  @media (min-width: 1233px){
+    .footer{
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  }
+</style>
 
-<div class="container jumbotron sm-12" style="width: 40%;">
-
-  <div class="jumbotron" style="background-color: #fff;border-radius: 20px;">
-    <div class="container">
-          <p class="display-3" style="text-transform: capitalize;color: #FF5722;font-size:30px;text-align:center">Submit Your Grievances</p>
-
-      <hr>
-
-      <a class="btn btn-lg pbtn" href="/parent" role="button">Parent</a>
-      <a class="btn btn-lg pbtn" href="/student" role="button">Student</a>
-      <a class="btn btn-lg pbtn" href="/teacher" role="button">Teacher</a>
+    <div class="con container" style="background-color: #fff;border-radius: 20px;text-align:center;margin-top:6%;">
+      <div class="col-md-12 col-sm-12" style="padding:10%;">
+        <p class="display-3" style="text-transform: capitalize;color: #FF5722;font-size:30px;text-align:center">Submit Your Grievances</p>
+        <hr>
+        <a class="btn btn-lg pbtn" href="/parent" role="button">Parent</a>
+        <a class="btn btn-lg pbtn" href="/student" role="button">Student</a>
+        <a class="btn btn-lg pbtn" href="/teacher" role="button">Teacher</a>
+      </div>
     </div>
-  </div>
-</div>
 
 <%- include('partials/footer') %>

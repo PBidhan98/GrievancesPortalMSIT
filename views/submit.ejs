@@ -1,9 +1,21 @@
 <%- include('partials/header') %>
+<style media="screen">
+  @media (min-width: 850px){
+    .con {
+      width: 70%;
+    }
+  }
+  @media (min-width: 1233px){
+    .footer{
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  }
+</style>
 
-
-<div class="container jumbotron sm-12" style="width: 70%;">
-  <div class="jumbotron" style="background-color: #fff;border-radius: 20px;">
-    <div class="container">
+    <div class="con container" style="background-color: #fff;border-radius: 20px;text-align:center;margin-top:8%;">
+      <div class="col-md-12 col-sm-12" style="padding:6%;">
       <p class="display-3" style="text-align:center;color: #FF5722;font-size:33px;">Submit Your New Grievances <a href="/formsubmit/<%= pid %>/<%=mem%>" role="button">here...</a></p>
 
       <% if(posts.length!=0){%>

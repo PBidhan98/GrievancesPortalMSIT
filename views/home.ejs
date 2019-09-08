@@ -1,12 +1,28 @@
 <%- include('partials/header') %>
 
+<style media="screen">
+  @media (min-width: 850px){
+    .con {
+      width: 35%;
+    }
+  }
+  @media (min-width: 1233px){
+    .footer{
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  }
+</style>
 
-<div class="container jumbotron" style="width: 40%; text-align:center;">
-  <div class="jumbotron" style="background-color: #fff;border-radius: 20px;" >
+<div class="con container" style="text-align:center;background-color: #fff;border-radius: 20px;margin-top:6%;">
+      <div class="col-md-12 col-sm-12" style="padding:7%;">
+        <div class="row col-sm-12">
       <p class="display-3" style="text-transform: capitalize;color: #FF5722;font-size:30px"><%= mem %></p>
       <hr>
       <a class="btn btn-lg pbtn" href="/register/<%= mem %>" role="button">Register</a>
       <a class="btn btn-lg pbtn" href="/login/<%= mem %>" role="button">Login</a>
+      </div>
   </div>
 </div>
 

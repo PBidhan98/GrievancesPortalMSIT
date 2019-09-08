@@ -7,40 +7,44 @@
     font-weight: 200;
     margin:1em 0em;
   }
+  .form-group{
+    padding: 0.5%;
+  }
+  @media (min-width: 850px){
+    .form-con {
+      margin-left: 400px;
+      margin-right: 500px;
+    }
+  }
 
 </style>
-  <div class="container jumbotron sm-12" style="background-color: #fff;border-radius: 20px;width: 50%">
 
-    <p class="display-3" style="text-transform:capitalize;color: #FF5722;padding-bottom:0.5em;font-size:25px;text-align:center;">Please enter the following:</p>
+    <div class="form-con container col-md-6"  style="background-color: #fff;border-radius: 20px;margin-top:2%;margin-bottom:2%;">
+    <p class="display-3" style="text-transform:capitalize;color: #FF5722;padding:3%;font-size:25px;text-align:center;">Please enter the following:</p>
 
-    <div class="row" style="padding-left: 10%;">
+    <div class="row">
       <div class="col-sm-12">
-        <div class="card">
+        <div class="card" style="padding:0% 15%;">
           <div class="card-body">
-
             <!-- Makes POST request to /register route -->
             <form action="/formsubmit/<%= pid %>/<%= mem %>" method="POST" enctype="multipart/form-data">
                 <label for="subject">Subject of Grievance:</label>
               <div class="form-group">
-                <input id="subject" type="text" name="subject" style="width:85%;" required oninvalid="this.setCustomValidity('Enter the subject of grievance')" onchange="this.setCustomValidity('')"/>
+                <input id="subject" type="text" name="subject" style="width:100%; required oninvalid="this.setCustomValidity('Enter the subject of grievance')" onchange="this.setCustomValidity('')"/>
               </div>
               <div class="form-group">
-
                   <label for="image">Image:   </label>
                   <input id="image" type="file" name="pic" accept="image/*"/>
 
-                  <label for="resume">Resume:   </label>
+                  <label for="resume">Attachement:   </label>
                   <input id="resume" type="file" name="resume">
-
-
               </div>
-
               <div class="form-group">
                <label for="details">Grievance Details:   </label>
-               <textarea name="details" id="details" rows="8" style="width:85%;" required oninvalid="this.setCustomValidity('Please specify the detail!')" onchange="this.setCustomValidity('')"></textarea>
+               <textarea name="details" id="details" rows="8" style="width:100%;" required oninvalid="this.setCustomValidity('Please specify the detail!')" onchange="this.setCustomValidity('')"></textarea>
               </div>
-              <div style="padding-left: 30%;">
-                <button type="submit" class="btn btn-lg" style="width: 30%;border-radius:20px;color: #ffff;background-color: #1fab89;margin-top:10px;">Submit</button>
+              <div style="padding-bottom:5%">
+                <button type="submit" class="btn btn-lg btn-block" style="border-radius:20px;color: #ffff;background-color: #1fab89;margin-top:10px;">Submit</button>
               </div>
 
 

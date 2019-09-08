@@ -7,16 +7,31 @@
     font-weight: 200;
     margin:0.5em 0em;
   }
+  .form-group{
+    padding: 0.5%;
+  }
+  @media (min-width: 850px){
+    .con {
+      margin-left: 500px;
+      margin-right: 500px;
+      width: 30%;
+    }
+  }
+  @media (min-width: 5000px){
+    .footer{
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  }
 
 </style>
 
-<div class="container jumbotron sm-12" style="width: 35%;">
-  <div class="jumbotron" style="background-color: #fff;border-radius:20px;" >
-    <div class="container">
-      <p class="display-3" style="text-transform: capitalize;color: #FF5722;font-size:30px;text-align:center;">Forget Password</p>
+  <div class="con container" style="background-color: #fff;border-radius:20px;">
+      <p class="display-3" style="text-transform: capitalize;color: #FF5722;font-size:30px;text-align:center;padding:3%;">Forget Password</p>
       <div class="row">
         <div class="col-sm-12">
-          <div class="card">
+          <div class="card" style="padding:0% 10%;">
             <div class="card-body">
                 <div class="form-group">
                   <label for="email">Email</label>
@@ -31,8 +46,8 @@
                   <input type="password" class="form-control" name="npwd" id="npwd" required oninvalid="this.setCustomValidity('Enter New Password')" onchange="this.setCustomValidity('')">
                   <h5 id="alertm" style="color:red; padding:1%;"></h5>
                 </div>
-                <div style="text-align:center;">
-                  <button id="submit" type="submit" class="btn btn-lg" style="width: 40%;border-radius:20px;color: #ffff;background-color: #1fab89;">Submit</button>
+                <div style="text-align:center;padding-bottom:4%;">
+                  <button id="submit" type="submit" class="btn btn-lg" style="border-radius:20px;color: #ffff;background-color: #1fab89;">Submit</button>
                 </div>
             <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
             <script type="text/javascript">
