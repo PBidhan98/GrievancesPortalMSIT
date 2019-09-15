@@ -5,6 +5,7 @@ const ejs = require("ejs");
 const multer = require("multer");
 const bcrypt = require('bcryptjs');
 const auth = require('./auth');
+const adminAuth = require('./adminAuth');
 const path = require("path");
 
 var timestamp=Date.now();
@@ -49,7 +50,12 @@ var con = mysql.createConnection({
   user: "sql12303299",
   password: "vvpkijscyS",
   database: "sql12303299",
-  port:3306
+  port:3306,
+  // host: "localhost",
+  // user: "root",
+  // password: "",
+  // database: "mydb",
+  multipleStatements: true
 });
 
 con.connect(function(err) {
@@ -97,11 +103,25 @@ con.connect(function(err) {
   //   if (err) console.log(err);
   //   console.log("teacherform is created..");
   // });
+  // var sql = "CREATE TABLE admin (id INT AUTO_INCREMENT PRIMARY KEY,username VARCHAR(255) NOT NULL UNIQUE,password VARCHAR(255))";
+  // con.query(sql, function(err, result) {
+  //
+  //   if (err) console.log(err);
+  //   console.log("admin is created..");
+  // });
 });
 
 
 app.get('/', function(req, res) {
   res.render("member");
+});
+
+app.get('/admin', function(req, res) {
+  res.render("adminLogin");
+});
+
+app.get('/adminPortal', function(req, res) {
+  res.render("adminPortal");
 });
 
 app.get('/contact', function(req,res){
@@ -186,6 +206,29 @@ app.post('/register/:member', function(req, res) {
 
 });
 
+// app.post('/admin/register', function(req, res) {
+//   var {username, password} = req.body;
+//
+//   bcrypt.genSalt(10, (err, salt)=> {
+//     bcrypt.hash(password, salt, async(err, hash) => {
+//       //Hash password
+//       password = hash;
+//       var sql = "INSERT INTO admin (username, password) VALUES ('" + username + "', '" + password + "')";
+//       con.query(sql, function(err, result) {
+//         if (err) {
+//           console.log(err);
+//           res.send("Something went wrong :( Refresh or Try Again Later!)");
+//         } else {
+//           res.send({
+//             status: "success",
+//           });
+//         }
+//       });
+//     });
+//   });
+//
+// });
+
 app.post('/formsubmit/:pid/:mem',upload.fields([{name: 'pic', maxCount: 1},{name: 'resume', maxCount: 1}]),function(req, res) {
   var {details, subject} = req.body;
 
@@ -228,13 +271,63 @@ app.post("/login/:member", async function(req, res) {
       msg: "Password and Email entered doesn't match. Check if you are registered or not"
     });
   }
+});
+
+app.post('/adminPortal', function(req, res) {
+  var sql = "SELECT COUNT(*) AS count FROM parentform;SELECT COUNT(*) AS countt FROM studentform;SELECT COUNT(*) AS counttt FROM teacherform";
+  con.query(sql, function(err, result,feilds) {
+    if (err) {
+      console.log(err);
+      res.send("Something went wrong :( Refresh or Try Again Later!)");
+    }else{
+      res.send({
+        pnum: result[0][0].count,
+        snum: result[1][0].countt,
+        tnum: result[2][0].counttt
+      });
+    }
+  });
+  // var sql = "SELECT COUNT(*) AS count FROM studentform";
+  // con.query(sql, function(err, data) {
+  //   if (err) {
+  //     console.log(err);
+  //     res.send("Something went wrong :( Refresh or Try Again Later!)");
+  //   }
+  //   else{
+  //     ss=data[0].count;
+  //   }
+  // });
+  // var sql = "SELECT COUNT(*) AS count FROM teacherform";
+  // con.query(sql, function(err, results) {
+  //   if (err) {
+  //     console.log(err);
+  //     res.send("Something went wrong :( Refresh or Try Again Later!)");
+  //   }else{
+  //     tt=results[0].count;
+  //   }
+  // });
 
 });
 
+app.post("/admin/login", async function(req, res) {
+  var {username, password} = req.body;
+  try{
+    const id = await adminAuth.authenticate(username,password);
+    if (id) {
+      res.send({
+        status: "success"
+      });
+    }
+  }catch(err){
+    res.send({
+      status: "fail",
+      msg: "Password and Username entered doesn't match. Check if you are registered or not"
+    });
+  }
+});
+
 app.post("/forget/:mem", function(req,res){
-
    var {email, dob, npwd} = req.body;
-
    bcrypt.genSalt(10, (err, salt)=> {
      bcrypt.hash(npwd, salt, async(err, hash) => {
        //Hash password
@@ -255,13 +348,51 @@ app.post("/forget/:mem", function(req,res){
          }
          if(result.affectedRows!=0) {
            res.send({
-             status: "success"
+             status: "success",
+             msg: "Well done, You have successfully changed the password..."
            });
          }
        });
      });
    });
 
+});
+
+
+app.post('/ptable', function(req, res) {
+  var sql = "SELECT formid,subject,details FROM parentform";
+  con.query(sql, function(err, result) {
+    if (err) {
+      console.log(err);
+      res.send("Something went wrong :( Refresh or Try Again Later!)");
+    } else {
+      res.render("ptable", {posts:result});
+    }
+  });
+});
+
+app.post('/stable', function(req, res) {
+  var sql = "SELECT formid,subject,details FROM studentform";
+  con.query(sql, function(err, result) {
+    if (err) {
+      console.log(err);
+      res.send("Something went wrong :( Refresh or Try Again Later!)");
+    } else {
+      res.render("stable", {posts:result});
+    }
+  });
+});
+
+app.post('/ttable', function(req, res) {
+  var sql = "SELECT formid,subject,details FROM teacherform";
+  con.query(sql, function(err, result) {
+    if (err) {
+      console.log(err);
+      res.send("Something went wrong :( Refresh or Try Again Later!)");
+    } else {
+      res.render("ttable", {posts:result});
+    }
+  });
 });
 
 app.listen(process.env.PORT || 3000, function(req,res){

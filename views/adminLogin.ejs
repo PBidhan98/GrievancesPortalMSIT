@@ -1,0 +1,69 @@
+<%- include('partials/header') %>
+<style media="screen">
+  label {
+    font-family: "Arial";
+    text-transform: uppercase;
+    font-weight: 200;
+    margin: 0.5em 0em;
+  }
+  .form-group {
+    padding: 0.5%;
+  }
+  @media (min-width: 850px) {
+    .form-con {
+      margin-left: 500px;
+      margin-right: 500px;
+    }
+  }
+  }
+</style>
+<div class="form-con container col-md-4" style="background-color: #fff;border-radius: 20px;">
+  <p class="display-3" style="text-transform: capitalize;color: #FF5722;font-size:30px;text-align:center;padding:3%;">Admin Login</p>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card" style="padding:0% 15%;">
+        <div class="card-body">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="username" class="form-control" id="username" name="username" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required oninvalid="this.setCustomValidity('Enter your password')" onchange="this.setCustomValidity('')">
+          </div>
+          <div class="form-group">
+            <h5 id="alertm" style="color:red;"></h5>
+              <button id="submit" type="submit" class="btn btn-lg btn-block" style="border-radius:10px;color: #ffff;background-color: #1fab89;">Login</button>
+          </div>
+          <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+          <script type="text/javascript">
+            $(document).ready(function() {
+              $('#submit').click(function() {
+                var username = $("#username").val();
+                var password = $("#password").val();
+                if (username && password) {
+                  $.post("/admin/login", {
+                    username: username,
+                    password: password,
+                  }, function(res, status) {
+                    if (res.status == "fail") {
+                      $("#alertm").html(res.msg);
+                    }
+                    if (res.status == "success") {
+                      localStorage.setItem("admin","yes");
+                      window.location.href = "/adminPortal";
+                    }
+                  });
+                } else {
+                  $("#alertm").html("Enter the empty fields");
+                }
+              });
+            });
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

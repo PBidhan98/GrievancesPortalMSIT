@@ -97,11 +97,16 @@
                 <div class="form-group">
                   <label for="password">Password: </label>
                   <input type="password" class="form-control" id="password" name="password" required>
-                  <h5 id="alertm" style="color:red; padding:1%;"></h5>
+                  <h5 id="alertm" style="color:red;"></h5>
                 </div>
 
-                <div style="text-align:center;padding-bottom:8%">
-                  <button id="submit" type="submit" class="btn btn-lg" style="width: 40%;border-radius:20px;color: #ffff;background-color: #1fab89;">Register</button>
+                <div style="text-align:center;">
+                  <button id="submit" type="submit" class="btn btn-lg btn-block" style="border-radius:10px;color: #ffff;background-color: #1fab89;">Register</button>
+                </div>
+                <hr/>
+                <div style="text-align:center;padding-bottom:8%;">
+                  <p style="color: grey;font-size:15px;">Already Registered?</p>
+                  <a class="btn btn-lg pbtn" href="/login/<%=mem%>" style="font-size:15px;" role="button">Login!</a>
                 </div>
 
             <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>

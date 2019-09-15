@@ -25,7 +25,7 @@
 
 </style>
 <div class="form-con container col-md-4" style="background-color: #fff;border-radius: 20px;">
-      <p class="display-3" style="text-transform: capitalize;color: #FF5722;font-size:30px;text-align:center;padding:3%;"><%=mem%> Account Login</p>
+      <p class="display-3" style="text-transform: capitalize;color: #FF5722;font-size:30px;text-align:center;padding:3%;">Admin Register</p>
       <div class="row">
         <div class="col-sm-12">
           <div class="card" style="padding:0% 15%;">
@@ -34,46 +34,41 @@
               <!-- Makes POST request to /register route -->
 
                 <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" class="form-control" id="email" name="email" required>
+                  <label for="username">Username</label>
+                  <input type="username" class="form-control" id="username" name="username" required>
                 </div>
                 <div class="form-group">
                   <label for="password">Password</label>
                   <input type="password" class="form-control" id="password" name="password" required oninvalid="this.setCustomValidity('Enter your password')" onchange="this.setCustomValidity('')">
-                  <a href="/forget/<%=mem%>" style="float: right;padding:2%;">Forgot Password!</a>
                 </div>
                 <br>
                 <div class="form-group">
                   <h5 id="alertm" style="color:red;"></h5>
                 </div>
-
                 <div>
-                <button id="submit" type="submit" class="btn btn-lg btn-block" style="border-radius:10px;color: #ffff;background-color: #1fab89;">Login</button>
+                <button id="submit" type="submit" class="btn btn-lg btn-block" style="border-radius:10px;color: #ffff;background-color: #1fab89;">Register</button>
                 </div>
 
                 <hr/>
-                <div style="text-align:center;padding-bottom:8%">
-                  <p style="color: grey;font-size:15px;">Don't have an account?</p>
-                  <a class="btn btn-lg pbtn" href="/register/<%=mem%>" style="font-size:15px;" role="button">Register!</a>
-                </div>
+
               <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
               <script type="text/javascript">
                 $(document).ready(function() {
                     $('#submit').click(function(){
-                      var email = $("#email").val();
+                      var username = $("#username").val();
                       var password = $("#password").val();
-                      if(email&&password){
-                        $.post("/login/<%=mem%>",
+                      if(username&&password){
+                        $.post("/admin/register",
                           {
-                            email: email,
+                            username: username,
                             password: password,
                           },function(res, status){
                             if(res.status=="fail"){
                               $("#alertm").html(res.msg);
                             }
                             if(res.status=="success"){
-                              window.location.href = "/submitted/"+res.pid+"/<%=mem%>";
+                              window.location.href = "/adminPortal";
                             }
                           }
                         );

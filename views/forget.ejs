@@ -27,6 +27,9 @@
 
 </style>
 
+<div class="alert" role="alert" style="text-align:center;font-size:20px;color:green;" id="alertg">
+</div>
+
   <div class="con container" style="background-color: #fff;border-radius:20px;">
       <p class="display-3" style="text-transform: capitalize;color: #FF5722;font-size:30px;text-align:center;padding:3%;">Forget Password</p>
       <div class="row">
@@ -44,10 +47,14 @@
                 <div class="form-group">
                   <label for="password">Enter New Password: </label>
                   <input type="password" class="form-control" name="npwd" id="npwd" required oninvalid="this.setCustomValidity('Enter New Password')" onchange="this.setCustomValidity('')">
-                  <h5 id="alertm" style="color:red; padding:1%;"></h5>
+                  <h5 id="alertm" style="color:red;"></h5>
                 </div>
-                <div style="text-align:center;padding-bottom:4%;">
-                  <button id="submit" type="submit" class="btn btn-lg" style="border-radius:20px;color: #ffff;background-color: #1fab89;">Submit</button>
+
+                <div style="text-align:center;">
+                  <button id="submit" type="submit" class="btn btn-lg btn-block" style="border-radius:10px;color: #ffff;background-color: #1fab89;">Submit</button>
+                </div>
+                <div style="text-align:center;padding-bottom:8%;">
+                  <a class="btn btn-lg pbtn" href="/login/<%=mem%>" style="font-size:15px;" role="button">Login!</a>
                 </div>
             <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
             <script type="text/javascript">
@@ -67,7 +74,7 @@
                             $("#alertm").html(res.msg);
                           }
                           if(res.status=="success"){
-                            window.location.href = "/login/<%=mem%>";
+                            $("#alertg").html(res.msg);
                           }
                         }
                       );
