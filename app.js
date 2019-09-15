@@ -5,7 +5,7 @@ const ejs = require("ejs");
 const multer = require("multer");
 const bcrypt = require('bcryptjs');
 const auth = require('./auth');
-const adminAuth = require('./adminAuth');
+// const adminAuth = require('./adminAuth');
 const path = require("path");
 
 var timestamp=Date.now();
@@ -311,19 +311,29 @@ app.post('/adminPortal', function(req, res) {
 
 app.post("/admin/login", async function(req, res) {
   var {username, password} = req.body;
-  try{
-    const id = await adminAuth.authenticate(username,password);
-    if (id) {
-      res.send({
-        status: "success"
-      });
-    }
-  }catch(err){
+  if(username=="sql12303299" && password=="vvpkijscyS"){
+    res.send({
+      status: "success"
+    });
+  }else{
     res.send({
       status: "fail",
       msg: "Password and Username entered doesn't match. Check if you are registered or not"
     });
   }
+  // try{
+  //   const id = await adminAuth.authenticate(username,password);
+  //   if (id) {
+      // res.send({
+      //   status: "success"
+      // });
+  //   }
+  // }catch(err){
+    // res.send({
+    //   status: "fail",
+    //   msg: "Password and Username entered doesn't match. Check if you are registered or not"
+    // });
+  // }
 });
 
 app.post("/forget/:mem", function(req,res){
