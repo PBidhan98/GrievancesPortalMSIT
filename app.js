@@ -162,7 +162,6 @@ app.get("/register/:member", function(req, res) {
 
 app.post('/register/:member', function(req, res) {
   var {name, phone, email, branch, shift, dob, password, number} = req.body;
-
   bcrypt.genSalt(10, (err, salt)=> {
     bcrypt.hash(password, salt, async(err, hash) => {
       //Hash password
@@ -367,7 +366,6 @@ app.post("/forget/:mem", function(req,res){
    });
 
 });
-
 
 app.post('/ptable', function(req, res) {
   var sql = "SELECT formid,subject,details FROM parentform";
