@@ -71,6 +71,12 @@ con.connect(function(err) {
   //   console.log("database created!");
   // });
   //
+  // var sql = "ALTER TABLE teacherform ADD created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP";
+  // con.query(sql, function(err, result) {
+  //   if (err) console.log(err);
+  //   console.log("teacherform is updated..");
+  // });
+
   // var sql="CREATE TABLE parents (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), phone VARCHAR(255), email VARCHAR(255) NOT NULL UNIQUE, dob VARCHAR(255), password VARCHAR(255))"
   // con.query(sql, function(err, result){
   //   if(err) throw err;
