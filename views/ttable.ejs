@@ -118,16 +118,22 @@
             <thead>
               <tr>
                 <th>S.No.</th>
+                <th>Name</th>
+                <th>Email</th>
                 <th>Subject</th>
                 <th>Grievance Detail</th>
+                <th>Created_At</th>
               </tr>
             </thead>
             <tbody>
                   <%  posts.forEach(function(post){ %>
                     <tr>
                       <td><%= post.formid %></td>
+                      <td><%= post.name %></td>
+                      <td><%= post.email %></td>
                       <td><%= post.subject %></td>
                       <td><%= post.details %></td>
+                      <td><%= post.created_at %></td>
                     </tr>
                   <% }) %>
             </tbody>
@@ -137,7 +143,7 @@
       </main>
     </div>
 </div>
-  
+
 
 
 </body>

@@ -2,12 +2,14 @@ const bcrypt = require('bcryptjs');
 const mysql = require('mysql');
 
 //create a connection
+
 // var con = mysql.createConnection({
 //   host: "localhost",
 //   user: "root",
 //   password: "",
 //   database: "mydb"
 // });
+
 var con = mysql.createConnection({
   host: "sql12.freesqldatabase.com",
   user: "sql12303299",

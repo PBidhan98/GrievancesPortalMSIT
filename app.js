@@ -45,18 +45,24 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 //create a connection
+
 var con = mysql.createConnection({
   host: "sql12.freesqldatabase.com",
   user: "sql12303299",
   password: "vvpkijscyS",
   database: "sql12303299",
   port:3306,
-  // host: "localhost",
-  // user: "root",
-  // password: "",
-  // database: "mydb",
   multipleStatements: true
 });
+
+
+// var con = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "",
+//   database: "mydb",
+//   multipleStatements: true
+// });
 
 con.connect(function(err) {
     //creating the database
@@ -83,26 +89,29 @@ con.connect(function(err) {
   //   console.log("teacher has been created..");
   // });
   //
-  // var sql = "CREATE TABLE parentform (formid INT AUTO_INCREMENT PRIMARY KEY,subject VARCHAR(255), details TEXT, person_id int, filename VARCHAR(255), FOREIGN KEY(person_id) REFERENCES parents(id))";
+  // var sql = "CREATE TABLE parentform (formid INT AUTO_INCREMENT PRIMARY KEY,subject VARCHAR(255), details TEXT, person_id int, filename VARCHAR(255), FOREIGN KEY(person_id) REFERENCES parents(id), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
   // con.query(sql, function(err, result) {
   //
   //   if (err) console.log(err);
   //   console.log("parentform is created..");
   // });
   //
-  // var sql = "CREATE TABLE studentform (formid INT AUTO_INCREMENT PRIMARY KEY,subject VARCHAR(255), details TEXT, person_id int, filename VARCHAR(255), FOREIGN KEY(person_id) REFERENCES students(id))";
+  // var sql = "CREATE TABLE studentform (formid INT AUTO_INCREMENT PRIMARY KEY,subject VARCHAR(255), details TEXT, person_id int, filename VARCHAR(255), FOREIGN KEY(person_id) REFERENCES students(id), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
   // con.query(sql, function(err, result) {
   //
   //   if (err) console.log(err);
   //   console.log("studentform is created..");
   // });
   //
-  // var sql = "CREATE TABLE teacherform (formid INT AUTO_INCREMENT PRIMARY KEY,subject VARCHAR(255), details TEXT, person_id int, filename VARCHAR(255), FOREIGN KEY(person_id) REFERENCES teachers(id))";
+  // var sql = "CREATE TABLE teacherform (formid INT AUTO_INCREMENT PRIMARY KEY,subject VARCHAR(255), details TEXT, person_id int, filename VARCHAR(255), FOREIGN KEY(person_id) REFERENCES teachers(id), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
   // con.query(sql, function(err, result) {
   //
   //   if (err) console.log(err);
   //   console.log("teacherform is created..");
   // });
+
+
+
   // var sql = "CREATE TABLE admin (id INT AUTO_INCREMENT PRIMARY KEY,username VARCHAR(255) NOT NULL UNIQUE,password VARCHAR(255))";
   // con.query(sql, function(err, result) {
   //
@@ -166,10 +175,8 @@ app.post('/register/:member', function(req, res) {
     bcrypt.hash(password, salt, async(err, hash) => {
       //Hash password
       password = hash;
-
       var s="SELECT email FROM "+req.params.member+"s WHERE email=?";
       con.query(s, email,function(err,data){
-        console.log(data);
         if(data.length!=0){
           console.log("hi");
           res.send({
@@ -184,7 +191,6 @@ app.post('/register/:member', function(req, res) {
           }else if(req.params.member=="teacher"){
             var sql = "INSERT INTO "+req.params.member+"s (name, phone, email, branch, shift, dob, password, employee_Id) VALUES ('" + name + "', '" + phone + "',  '" + email + "',  '" + branch + "',  '"+shift+"', '" + dob + "', '" + password + "',  '" + number + "')";
           }
-
           con.query(sql, function(err, result) {
             if (err) {
               console.log(err);
@@ -368,7 +374,7 @@ app.post("/forget/:mem", function(req,res){
 });
 
 app.post('/ptable', function(req, res) {
-  var sql = "SELECT formid,subject,details FROM parentform";
+  var sql = "SELECT parents.name, parents.email, parentform.formid, parentform.subject, parentform.details, parentform.created_at FROM parents INNER JOIN parentform ON parentform.person_id = parents.id";
   con.query(sql, function(err, result) {
     if (err) {
       console.log(err);
@@ -380,8 +386,9 @@ app.post('/ptable', function(req, res) {
 });
 
 app.post('/stable', function(req, res) {
-  var sql = "SELECT formid,subject,details FROM studentform";
+  var sql = "SELECT students.name, students.email, studentform.formid, studentform.subject, studentform.details, studentform.created_at FROM students INNER JOIN studentform ON studentform.person_id = students.id";
   con.query(sql, function(err, result) {
+    console.log(result);
     if (err) {
       console.log(err);
       res.send("Something went wrong :( Refresh or Try Again Later!)");
@@ -392,6 +399,7 @@ app.post('/stable', function(req, res) {
 });
 
 app.post('/ttable', function(req, res) {
+  var sql = "SELECT teachers.name, teachers.email, teacherform.formid, teacherform.subject, teacherform.details, teacherform.created_at FROM teachers INNER JOIN teacherform ON teacherform.person_id = teachers.id";
   var sql = "SELECT formid,subject,details FROM teacherform";
   con.query(sql, function(err, result) {
     if (err) {
