@@ -406,7 +406,6 @@ app.post('/stable', function(req, res) {
 
 app.post('/ttable', function(req, res) {
   var sql = "SELECT teachers.name, teachers.email, teacherform.formid, teacherform.subject, teacherform.details, teacherform.created_at FROM teachers INNER JOIN teacherform ON teacherform.person_id = teachers.id";
-  var sql = "SELECT formid,subject,details FROM teacherform";
   con.query(sql, function(err, result) {
     if (err) {
       console.log(err);
