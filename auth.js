@@ -11,12 +11,21 @@ const mysql = require('mysql');
 // });
 
 var con = mysql.createConnection({
-  host: "sql12.freesqldatabase.com",
-  user: "sql12303299",
-  password: "vvpkijscyS",
-  database: "sql12303299",
-  port:3306
+  host: "149.56.37.25",
+  user: "grievance",
+  password: "msit@123",
+  database: "grievance",
+  port:3306,
+  multipleStatements: true
 });
+
+// var con = mysql.createConnection({
+//   host: "sql12.freesqldatabase.com",
+//   user: "sql12303299",
+//   password: "vvpkijscyS",
+//   database: "sql12303299",
+//   port:3306
+// });
 
 exports.authenticate = (email, pwd, member) => {
   return new Promise(async (resolve, reject) => {
