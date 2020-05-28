@@ -46,7 +46,7 @@
                 <% if(mem == "student"){%>
                   <div class="form-group">
                     <label for="number">Enrollment No.: </label>
-                    <input type="number" class="form-control number" name="number" required>
+                    <input type="number" id="num" class="form-control number" name="enrolnum" required>
                   </div>
                   <div class="form-group">
                       <label for="branch">Branch: </label>
@@ -75,7 +75,7 @@
                 <% if(mem == "teacher"){%>
                   <div class="form-group">
                     <label for="number">Employee Id: </label>
-                    <input type="number" class="form-control number" name="number" required>
+                    <input type="number" id="num" class="form-control number" name="enrolnum" required>
                   </div>
                   <div class="form-group">
                       <label for="branch">Department: </label>
@@ -119,12 +119,12 @@
                     var name = $("#name").val();
                     var phone = $("#phone").val();
                     var dob = $("#dob").val();
-                    var number = $("#number").val();
+                    var enrolnum = $("#num").val();
                     var email = $("#email").val();
                     var branch = $("#branch").val();
                     var shift = $("#shift").val();
                     var password = $("#password").val();
-                    if(name&&phone&&dob&&email&&password){
+                    if(name&&phone&&dob&&email&&password&&enrolnum){
                       var reg = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
                       var OK = reg.exec(phone);
                       if (!OK)
@@ -136,7 +136,7 @@
                               name:name,
                               phone:phone,
                               dob:dob,
-                              number:number,
+                              enrolnum:enrolnum,
                               email: email,
                               branch:branch,
                               shift:shift,

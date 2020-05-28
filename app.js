@@ -42,6 +42,7 @@ app.use(express.static('./public'));
 app.use(bodyParser.urlencoded({
   extended: false
 }));
+
 app.use(bodyParser.json());
 
 //create a connection
@@ -183,7 +184,8 @@ app.get("/register/:member", function(req, res) {
 });
 
 app.post('/register/:member', function(req, res) {
-  var {name, phone, email, branch, shift, dob, password, number} = req.body;
+  var {name, phone, email, branch, shift, dob, password, enrolnum} = req.body;
+  console.log(enrolnum);
   bcrypt.genSalt(10, (err, salt)=> {
     bcrypt.hash(password, salt, async(err, hash) => {
       //Hash password
@@ -200,9 +202,9 @@ app.post('/register/:member', function(req, res) {
           if(req.params.member=="parent"){
             var sql = "INSERT INTO "+req.params.member+"s (name, phone, email, dob, password) VALUES ('" + name + "', '" + phone + "', '" + email + "', '" + dob + "', '" + password + "')";
           }else if(req.params.member=="student"){
-            var sql = "INSERT INTO "+req.params.member+"s (name, phone, email, branch, shift, dob, password, enrollment_No) VALUES ('" + name + "', '" + phone + "',  '" + email + "',  '" + branch + "',  '"+shift+"', '" + dob + "', '" + password + "',  '" + number + "')";
+            var sql = "INSERT INTO "+req.params.member+"s (name, phone, email, branch, shift, dob, password, enrollment_No) VALUES ('" + name + "', '" + phone + "',  '" + email + "',  '" + branch + "',  '"+shift+"', '" + dob + "', '" + password + "',  '" + enrolnum + "')";
           }else if(req.params.member=="teacher"){
-            var sql = "INSERT INTO "+req.params.member+"s (name, phone, email, branch, shift, dob, password, employee_Id) VALUES ('" + name + "', '" + phone + "',  '" + email + "',  '" + branch + "',  '"+shift+"', '" + dob + "', '" + password + "',  '" + number + "')";
+            var sql = "INSERT INTO "+req.params.member+"s (name, phone, email, branch, shift, dob, password, employee_Id) VALUES ('" + name + "', '" + phone + "',  '" + email + "',  '" + branch + "',  '"+shift+"', '" + dob + "', '" + password + "',  '" + enrolnum + "')";
           }
           con.query(sql, function(err, result) {
             if (err) {
@@ -383,7 +385,6 @@ app.post("/forget/:mem", function(req,res){
        });
      });
    });
-
 });
 
 app.post('/ptable', function(req, res) {
@@ -399,9 +400,9 @@ app.post('/ptable', function(req, res) {
 });
 
 app.post('/stable', function(req, res) {
-  var sql = "SELECT students.name, students.email, studentform.formid, studentform.subject, studentform.details, studentform.created_at FROM students INNER JOIN studentform ON studentform.person_id = students.id";
+  var sql = "SELECT students.name, students.enrollment_no, students.email, students.phone, students.branch, students.shift, students.dob, studentform.formid, studentform.subject, studentform.details, studentform.created_at FROM students INNER JOIN studentform ON studentform.person_id = students.id";
   con.query(sql, function(err, result) {
-    //console.log(result);
+    console.log(result);
     if (err) {
       console.log(err);
       res.send("Something went wrong :( Refresh or Try Again Later!)");
