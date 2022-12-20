@@ -61,7 +61,7 @@ var con = mysql.createConnection({
   user: "grievance",
   password: "msit@123",
   database: "grievance",
-  port:3306,
+  port: 3306,
   multipleStatements: true
 });
 
@@ -139,6 +139,8 @@ app.get('/', function(req, res) {
   res.render("member");
 });
 
+// nav bar starts
+
 app.get('/admin', function(req, res) {
   res.render("adminLogin");
 });
@@ -150,6 +152,26 @@ app.get('/adminPortal', function(req, res) {
 app.get('/contact', function(req,res){
   res.render("contact");
 })
+
+// navbar ends
+
+app.get('/:member', function(req, res) {
+  res.render("home",{mem:req.params.member});
+});
+
+// login render
+app.get("/login/:member", function(req, res) {
+  res.render("login",{mem:req.params.member});
+});
+
+app.get("/forget/:mem", function(req,res){
+  res.render("forget",{mem:req.params.mem});
+});
+
+// register render
+app.get("/register/:member", function(req, res) {
+  res.render("register",{mem:req.params.member});
+});
 
 app.get('/formsubmit/:pid/:mem', function(req, res) {
   res.render("form", {pid: req.params.pid, mem: req.params.mem});
@@ -167,32 +189,15 @@ app.get('/submitted/:pid/:mem', function(req, res) {
   });
 });
 
-app.get("/forget/:mem", function(req,res){
-  res.render("forget",{mem:req.params.mem});
-});
-
-app.get('/:member', function(req, res) {
-  res.render("home",{mem:req.params.member});
-});
-
-app.get("/login/:member", function(req, res) {
-  res.render("login",{mem:req.params.member});
-});
-
-app.get("/register/:member", function(req, res) {
-  res.render("register",{mem:req.params.member});
-});
-
 app.post('/register/:member', function(req, res) {
   var {name, phone, email, branch, shift, dob, password, enrolnum} = req.body;
-  console.log(enrolnum);
   bcrypt.genSalt(10, (err, salt)=> {
     bcrypt.hash(password, salt, async(err, hash) => {
       //Hash password
       password = hash;
       var s="SELECT email FROM "+req.params.member+"s WHERE email=?";
       con.query(s, email,function(err,data){
-        //console.log(email);
+        // data is the array of query on DB
         if(data.length!=0){
           res.send({
             status: "fail",
@@ -214,6 +219,7 @@ app.post('/register/:member', function(req, res) {
               res.send({
                 status: "success",
                 pid: result.insertId
+                // insertId is the field in result array
               });
               //res.render("submit", {pid: result.insertId, mem: req.params.member, posts:[]});
             }
